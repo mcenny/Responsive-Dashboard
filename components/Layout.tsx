@@ -7,7 +7,32 @@ export default function Layout ({children}: any){
   const [showNav, setShowNav] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   
-  function handleSize(){
-    
+  function handleResize(){
+    if(innerWidth <= 640){
+      setShowNav(false);
+      setIsMobile(true);
+    } else {
+      setShowNav(true)
+      setIsMobile(false)
+    }
   }
+  
+  useEffect(()=>{
+    if(typeof window != undefined){
+      addEventListener('resize', handleResize)
+    }
+    
+    return () => {
+      removeEventListener('resize', handleResize)
+    }
+  }, [])
+  
+  
+  return(
+    <div>
+      <TopBar showNav={showNav} setShowNav={setShowNav}/>
+      
+      {children}
+    </div>
+  )
 }
